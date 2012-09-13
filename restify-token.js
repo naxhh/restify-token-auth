@@ -17,7 +17,11 @@ var	opt = {
 
 	//Login routes
 	routes: {
-		getToken: '/getToken/:appID/:secret',
+		getToken: {
+			url: '/getToken/',
+			id: 'appID',
+			secret: 'secret',
+		},
 	},
 
 	//Throttle data
@@ -106,8 +110,8 @@ var AppAuth = function(options) {
 	var s = opt.s,
 		r = opt.r;
 
-	s.get({path:opt.routes.getToken}, function(req,res,next) {
-		auth.getToken(req.params.appID, req.params.secret, res.locals.redis, function(err, token) {
+	s.get({path:opt.routes.getToken.url}, function(req,res,next) {
+		auth.getToken(req.params[opt.routes.getToken.id], req.params.[opt.routes.getToken.secret], res.locals.redis, function(err, token) {
 			if (typeof err != 'undefined')
 				res.send(opt.loginErr); //invalid login
 			else
