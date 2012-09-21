@@ -45,6 +45,7 @@ auth = {
 	 */
 	checkAPI : function(apiID, secret, callback) {
 		if (typeof apiID == "undefined" || typeof secret == "undefined") {callback('invalid'); return; }
+		
 		redis.get(opt.dbData.idApi+apiID, function(err,pass) {
 			if (pass != secret)
 				callback('invalid');
