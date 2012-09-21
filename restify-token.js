@@ -44,6 +44,7 @@ auth = {
 	 * @param  {Function} callback
 	 */
 	checkAPI : function(apiID, secret, callback) {
+		if (typeof apiID == "undefined" || typeof secret == "undefined") {callback('invalid'); return; }
 		redis.get(opt.dbData.idApi+apiID, function(err,pass) {
 			if (pass != secret)
 				callback('invalid');
@@ -111,7 +112,7 @@ var AppAuth = function(options) {
 		r = opt.r;
 
 	s.get({path:opt.routes.getToken.url}, function(req,res,next) {
-		auth.getToken(req.params[opt.routes.getToken.id], req.params.[opt.routes.getToken.secret], res.locals.redis, function(err, token) {
+		auth.getToken(req.params[opt.routes.getToken.id], req.params[opt.routes.getToken.secret], res.locals.redis, function(err, token) {
 			if (typeof err != 'undefined')
 				res.send(opt.loginErr); //invalid login
 			else
